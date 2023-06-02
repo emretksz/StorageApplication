@@ -1,0 +1,526 @@
+﻿@using Application.Constants;
+@using Entities.Concrete;
+@model StorageApplication.Helpers.EnumHelper.EnumViewModel;
+@{
+    ViewData["Title"] = "Home Page";
+    var listeView = (List<Product>)ViewBag.Product;
+
+    int vehicleSize = ConstHelper.VehicleSize();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Haritalar</title>
+
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+
+    <div id="map"></div>
+    <div class="row container">
+        <form>
+            <div class="col-md-12 row">
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label" style="margin-top:10px">Ürünler</label>
+                    <select class="form-control" id="firstProduct" name="firstProduct" >
+                        <option>Seçim Yapınız</option>
+                        @foreach (var item in listeView)
+                        {
+                            <option id="firstProduct_@item.Id" value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label" style="margin-top:10px">Ağırlık</label>
+                    <select class="form-control" id="WeightSelectedValue_1" name="WeightSelectedValue_1">
+                        <option>Seçim Yapınız</option>
+                        <option value="20">20</option>
+                        <option value="40">40</option>
+                        <option value="60">60</option>
+                        <option value="80">80</option>
+                        <option value="100">100</option>
+                    </select>
+                
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label" style="margin-top:10px">Miktar</label>
+                    <select class="form-control" id="AmountSelectedValue_1" name="AmountSelectedValue_1">
+                        <option>Seçim Yapınız</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="400">400</option>
+                        <option value="600">600</option>
+                        <option value="800">800</option>
+                    </select>
+              
+                </div>
+
+            </div>
+            <div class="col-md-12 row">
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+                    <select class="form-control" id="secondProduct" name="secondProduct" >
+                        <option>Seçim Yapınız</option>
+                        @foreach (var item in listeView)
+                        {
+                            <option id="secondProduct_@item.Id" value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+               
+
+                    <select class="form-control" id="WeightSelectedValue_2" name="WeightSelectedValue_2">
+                        <option>Seçim Yapınız</option>
+                        <option value="20">20</option>
+                        <option value="40">40</option>
+                        <option value="60">60</option>
+                        <option value="80">80</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+          
+                    <select class="form-control" id="AmountSelectedValue_2" name="AmountSelectedValue_2">
+                        <option>Seçim Yapınız</option>
+                        <option  value="100">100</option>
+                        <option  value="200">200</option>
+                        <option  value="400">400</option>
+                        <option  value="600">600</option>
+                        <option value="800">800</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-md-12 row">
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+                    <select class="form-control" id="thirdProduct" name="thirdProduct" >
+                        <option>Seçim Yapınız</option>
+                        @foreach (var item in listeView)
+                        {
+                            <option id="thirdProduct_@item.Id" value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+                    <select class="form-control" id="WeightSelectedValue_3" name="WeightSelectedValue_3">
+                        <option>Seçim Yapınız</option>
+                        <option value="20">20</option>
+                        <option value="40">40</option>
+                        <option value="60">60</option>
+                        <option value="80">80</option>
+                        <option value="100">100</option>
+                    </select>
+           
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+     
+                    <select class="form-control" id="AmountSelectedValue_3" name="AmountSelectedValue_3">
+                        <option>Seçim Yapınız</option>
+                        <option  value="100">100</option>
+                        <option  value="200">200</option>
+                        <option  value="400">400</option>
+                        <option  value="600">600</option>
+                        <option  value="800">800</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-md-12 row">
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+                    <select class="form-control" id="fourthProduct" name="fourthProduct" >
+                        <option>Seçim Yapınız</option>
+                        @foreach (var item in listeView)
+                        {
+                            <option id="fourthProduct_@item.Id" value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+           
+                    <select class="form-control" id="WeightSelectedValue_4" name="WeightSelectedValue_4">
+                        <option>Seçim Yapınız</option>
+                        <option value="20">20</option>
+                        <option value="40">40</option>
+                        <option value="60">60</option>
+                        <option value="80">80</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+          
+                    <select class="form-control" id="AmountSelectedValue_4" name="AmountSelectedValue_4">
+                        <option>Seçim Yapınız</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="400">400</option>
+                        <option value="600">600</option>
+                        <option value="800">800</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-md-12 row">
+                <label for="disabledTextInput" style="margin-top:10px" class="form-label">MOD</label>
+                <div class="col-md-3" style="margin-top:15px">
+                    <label>
+                        <input type="radio" name="radioOption" value="Yaya" /> Yürüyerek
+                    </label>
+                </div>
+                <div class="col-md-3" style="margin-top:15px">
+                    <label>
+                        <input type="radio" name="onemli" value="option1" checked /> Önemli
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-md-12 row">
+                <div class="col-md-3" style="margin-top:15px">
+
+                    <label>
+                        <input type="radio" name="radioOption" value="Araç" checked /> Araçla
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <label for="disabledTextInput" class="form-label"></label>
+                    <input type="radio" name="onemli" value="option1" /> Önemsiz
+                </div>
+
+            </div>
+
+
+            <button type="button" onclick="SendForm()" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+
+    <div class="container">
+        <div id="table"></div>
+    </div>
+    <script>
+
+        ///kordinatı almak için çalışan script 
+        // tarayıcının konumunu alır
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                console.log("Tarayıcınızda konum hizmetleri desteklenmiyor.");
+            }
+        }
+        var myLatitude="";
+         var myLongitude=";"
+        function showPosition(position) {
+            myLatitude = position.coords.latitude;
+            myLongitude = position.coords.longitude;
+
+            // Konum bilgilerini kullanarak yapmak istediğiniz işlemleri gerçekleştirin
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    console.log("Konum erişimi reddedildi.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    console.log("Konum bilgilerine erişilemiyor.");
+                    break;
+                case error.TIMEOUT:
+                    console.log("İstek zaman aşımına uğradı.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    console.log("Bilinmeyen bir hata oluştu.");
+                    break;
+            }
+        }
+       
+        var startDistribution = new Array();
+
+
+        //seçili dropdownlardan gelen veriler alınır
+        function SendForm() {
+
+            var vehicleSize=0;
+            var stringArray = new Array();
+            startDistribution = new Array();
+            var list = [];
+            //sayfada gösterilecek product kadar p değeri arttırılmalı
+            var p = 1;
+
+            //property tanımlamaları
+            var productId;
+            var amount;
+         
+
+            var product1 = document.getElementById('firstProduct');
+            var product2 = document.getElementById('secondProduct');
+            var product3 = document.getElementById('thirdProduct');
+            var product4 = document.getElementById('fourthProduct');
+
+            var weight1 = document.getElementById('WeightSelectedValue_1');
+            var weight2 = document.getElementById('WeightSelectedValue_2');
+            var weight3 = document.getElementById('WeightSelectedValue_3');
+            var weight4 = document.getElementById('WeightSelectedValue_4');     
+            
+            var amount1 = document.getElementById('AmountSelectedValue_1');
+            var amount2 = document.getElementById('AmountSelectedValue_2');
+            var amount3 = document.getElementById('AmountSelectedValue_3');
+            var amount4 = document.getElementById('AmountSelectedValue_4');
+            console.log(amount1.value);
+            console.log(amount2.value);
+            console.log(amount3.value);
+            console.log(amount4.value);
+         
+            // Seçilen değeri yakalayın
+            var selectedProduct1 = product1.value;
+            var selectedProduct2 = product2.value;
+            var selectedProduct3 = product3.value;
+            var selectedProduct4 = product4.value;
+
+            var selectedWeight1 = weight1.value;
+            var selectedWeight2 = weight2.value;
+            var selectedWeight3 = weight3.value;
+            var selectedWeight4 = weight4.value;  
+            
+            var selectedAmount1 = amount1.value;
+            var selectedAmount2 = amount2.value;
+            var selectedAmount3 = amount3.value;
+            var selectedAmount4 = amount4.value;
+            
+          
+             
+            //boş olmayan seçilmiş dropdown verileri kontrol edilir ve listeye alınır
+
+            if (selectedProduct1 != NaN && selectedAmount1 != NaN && selectedProduct1 != "Seçim Yapınız" && selectedAmount1 != "Seçim Yapınız" && selectedWeight1 != "Seçim Yapınız") {
+                   
+              stringArray[0] = { "Miktar": parseInt(selectedAmount1), "UrunId": parseInt(selectedProduct1), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0 };
+            } 
+            if (selectedProduct2 != NaN && selectedAmount2 != NaN && selectedProduct2 != "Seçim Yapınız" && selectedAmount2 != "Seçim Yapınız" && selectedWeight2 != "Seçim Yapınız") {
+                stringArray[1] = { "Miktar": parseInt(selectedAmount2), "UrunId": parseInt(selectedProduct2), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0 };
+            }
+            if (selectedProduct3 != NaN && selectedAmount3 != NaN && selectedProduct3 != "Seçim Yapınız" && selectedAmount3 != "Seçim Yapınız" && selectedWeight3 != "Seçim Yapınız") {
+                stringArray[2] = { "Miktar": parseInt(selectedAmount3), "UrunId": parseInt(selectedProduct3), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0 };
+            }  
+            if ( selectedProduct4 != NaN && selectedAmount4 != NaN && selectedProduct4 != "Seçim Yapınız" && selectedAmount4 != "Seçim Yapınız" && selectedWeight4 != "Seçim Yapınız") {
+                stringArray[3] = { "Miktar": parseInt(selectedAmount4), "UrunId": parseInt(selectedProduct4), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0 ,"Latitude":0,"Longitude":0};
+            }
+
+            //eklenen her verinin ağırlığı toplanır ve sistemde hazır olarak belirlenen değerle karşılaştırılır
+            //ağrılık kapasiteden büyükse uyarı çıkar
+            if (selectedWeight1!="Seçim Yapınız") 
+                vehicleSize += parseInt(selectedWeight1);
+            if (selectedWeight2 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedWeight2);
+            if (selectedWeight3 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedWeight3);
+            if (selectedWeight4 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedWeight4);
+
+            if (parseInt(vehicleSize)>'@vehicleSize') {
+                swal({
+                    title: "Dikkat",
+                    text: "Araç Kapasitesi Aşıldı! Maksimum Araç Kapasitesi: "+"@vehicleSize"+"KG",
+                    icon: "warning",
+                    button: "Tamam",
+                });
+                
+                return;
+            }
+          
+            $.ajax({
+                url: '@Url.Action("GetStoreLocationAndProduct","Home")?l=' + myLatitude+"&l2="+myLongitude,
+                type: "POST",
+                data: JSON.stringify(stringArray),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                  console.log("sonuç",data);
+                  //tabloyu temizle
+                  document.getElementById('table').innerHTML="";
+
+                  var stringTemplate="";
+                    if(data=="0"){
+                        swal({
+                            title: "Dikkat",
+                            text: "Yetersiz Stok",
+                            icon: "warning",
+                            button: "Tamam",
+                        });
+                        return;
+                    }
+                    if (data.length > 0) {
+                        
+                        ///hatalı gelenm ürünleri alert olarak gösterilecek yer
+                        if (data[0].errorMessage.length > 0) {
+                            var errorList = "<span>" + "Stokta Olmayan İsterler" + "</span>" + "</br>";
+                            for (var e = 0; e < data[0].errorMessage.length; e++) {
+                                errorList += "<span>" +[e+1]+"."+ data[0].errorMessage[e] + "</span>" + "</br>";
+                            }
+                            swal({
+                                title: "Dikkat",
+                                content: {
+                                    element: "div",
+                                    attributes: {
+                                        innerHTML: errorList
+                                    }
+                                },
+                                icon: "warning",
+                                button: "Tamam",
+                                
+                            });
+                            //return;
+                        }
+
+                        for (var i = 0; i < data.length; i++) {
+                      
+                            stringTemplate += ` <tr>
+                                                      <th scope="row">${i+1}</th>
+                                                       <td>${data[i].urunAdi}</td>
+                                                       <td> ${data[i].latitude}/ ${data[i].longitude}</td>
+                                                      <td>${data[i].depoAdi} </td>
+                                                              <td>${data[i].miktar} </td>
+                                                    </tr>`;
+
+                        }
+
+                        var htmls = `
+                            <table class="table">
+                            <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Ürün Adı</th>
+                              <th scope="col">Konum X/Y</th>
+                              <th scope="col">Konum Adı</th>
+                              <th scope="col">Depo Miktarı</th>
+                            </tr>
+                           </thead>
+                           <tbody>
+                                   ${stringTemplate}
+                                      </tbody>
+                                </table>
+                           `
+                        document.getElementById("table").innerHTML=htmls;
+                        initMap(data);
+
+                    }
+                    else{
+                     
+                            swal({
+                                title: "Dikkat",
+                                text: "Seçilen Ürün ve Adet bulunamadı",
+                                icon: "warning",
+                                button: "Tamam",
+                            });
+                       
+
+                    }
+                 
+                },
+                error: function (data) {
+
+                }
+
+            })
+
+        }
+     
+      
+                function initMap(datacount) {
+          
+            var currentLocation = { lat: myLatitude, lng: myLongitude };
+
+            var destinationLocations = [];
+            console.log(datacount);
+            if (datacount.length > 0) {
+                for (var i = 0; i < datacount.length; i++) {
+                    destinationLocations.push({
+                        lat: datacount[i].latitude,
+                        lng: datacount[i].longitude
+                    });
+                }
+            }
+
+            var mapOptions = {
+                center: currentLocation,
+                zoom: 12
+            };
+
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            // Mevcut konumu mavi daire şeklinde gösteren marker
+            var currentLocationMarker = new google.maps.Marker({
+                position: currentLocation,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 4,
+                    fillColor: "blue",
+                    fillOpacity: 1,
+                    strokeColor: "blue",
+                    strokeOpacity: 1,
+                    strokeWeight: 2
+                }
+            });
+
+            var directionsService = new google.maps.DirectionsService();
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(map);
+
+            var waypoints = [];
+            for (var i = 0; i < destinationLocations.length; i++) {
+                waypoints.push({
+                    location: destinationLocations[i],
+                    stopover: true
+                });
+            }
+
+            var radioValue = document.querySelector('input[name="radioOption"]:checked').value;
+            console.log(radioValue);
+            var request = {
+                origin: currentLocation,
+                destination: destinationLocations[destinationLocations.length - 1],
+                waypoints: waypoints,
+                optimizeWaypoints: true,
+                travelMode: radioValue == "Yaya" ? google.maps.TravelMode.WALKING : google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+    </script>
+
+    <script>
+  
+            var q = "";
+            document.addEventListener("DOMContentLoaded", function (event) {
+                getLocation();
+                setTimeout(()=>{
+                initMap(q);
+                },1000)
+            });
+
+      
+    </script>
+
+</body>
+</html>
