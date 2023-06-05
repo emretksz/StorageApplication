@@ -27,6 +27,8 @@ namespace Application.DependencyResolvers.Autofac
             builder.RegisterType<TypeRepository>().As<ITypeDal>().SingleInstance();
             builder.RegisterType<VehicleRepository>().As<IVehicleDal>().SingleInstance();
             builder.RegisterType<Mapper>().As<IMapper>().SingleInstance();
+            builder.RegisterType<AmountRepository>().As<IAmountDal>().SingleInstance();
+            builder.RegisterType<WeightRepository>().As<IWeightDal>().SingleInstance();
 
             //manager dependency
             builder.RegisterType<ProductManager>().As<IProductServices>().SingleInstance();

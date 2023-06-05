@@ -4,6 +4,8 @@
 @{
     ViewData["Title"] = "Home Page";
     var listeView = (List<Product>)ViewBag.Product;
+    var amountView = (List<Amount>)ViewBag.Amount;
+    var weightView = (List<Weight>)ViewBag.Weight;
 
     int vehicleSize = ConstHelper.VehicleSize();
 }
@@ -12,15 +14,17 @@
 <html>
 <head>
     <title>Google Haritalar</title>
-
     <style>
         #map {
             height: 400px;
             width: 100%;
         }
+        .dropdownList{
+
+        }
     </style>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <script src="~/js/indexdropdown.js"></script>
 </head>
 <body>
 
@@ -30,7 +34,7 @@
             <div class="col-md-12 row">
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label" style="margin-top:10px">Ürünler</label>
-                    <select class="form-control" id="firstProduct" name="firstProduct" >
+                    <select class="form-control dropdownList" id="firstProduct" onchange="Test()" name="firstProduct">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in listeView)
                         {
@@ -40,13 +44,12 @@
                 </div>
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label" style="margin-top:10px">Ağırlık</label>
-                    <select class="form-control" id="WeightSelectedValue_1" name="WeightSelectedValue_1">
+                    <select class="form-control" id="WeightSelectedValue_1"  name="WeightSelectedValue_1">
                         <option>Seçim Yapınız</option>
-                        <option value="20">20</option>
-                        <option value="40">40</option>
-                        <option value="60">60</option>
-                        <option value="80">80</option>
-                        <option value="100">100</option>
+                         @foreach (var item in weightView)
+                        {
+                            <option  value="@item.Value">@item.Name</option>
+                        }
                     </select>
                 
                 </div>
@@ -54,11 +57,10 @@
                     <label for="disabledTextInput" class="form-label" style="margin-top:10px">Miktar</label>
                     <select class="form-control" id="AmountSelectedValue_1" name="AmountSelectedValue_1">
                         <option>Seçim Yapınız</option>
-                        <option value="100">100</option>
-                        <option value="200">200</option>
-                        <option value="400">400</option>
-                        <option value="600">600</option>
-                        <option value="800">800</option>
+                      @foreach (var item in amountView)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
                     </select>
               
                 </div>
@@ -67,7 +69,7 @@
             <div class="col-md-12 row">
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label"></label>
-                    <select class="form-control" id="secondProduct" name="secondProduct" >
+                    <select class="form-control dropdownList" id="secondProduct" name="secondProduct">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in listeView)
                         {
@@ -81,11 +83,10 @@
 
                     <select class="form-control" id="WeightSelectedValue_2" name="WeightSelectedValue_2">
                         <option>Seçim Yapınız</option>
-                        <option value="20">20</option>
-                        <option value="40">40</option>
-                        <option value="60">60</option>
-                        <option value="80">80</option>
-                        <option value="100">100</option>
+                        @foreach (var item in weightView)
+                        {
+                             <option  value="@item.Value">@item.Name</option>
+                        }
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -93,11 +94,10 @@
           
                     <select class="form-control" id="AmountSelectedValue_2" name="AmountSelectedValue_2">
                         <option>Seçim Yapınız</option>
-                        <option  value="100">100</option>
-                        <option  value="200">200</option>
-                        <option  value="400">400</option>
-                        <option  value="600">600</option>
-                        <option value="800">800</option>
+                        @foreach (var item in amountView)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
                     </select>
                 </div>
 
@@ -105,7 +105,7 @@
             <div class="col-md-12 row">
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label"></label>
-                    <select class="form-control" id="thirdProduct" name="thirdProduct" >
+                    <select class="form-control dropdownList" id="thirdProduct" name="thirdProduct">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in listeView)
                         {
@@ -117,11 +117,10 @@
                     <label for="disabledTextInput" class="form-label"></label>
                     <select class="form-control" id="WeightSelectedValue_3" name="WeightSelectedValue_3">
                         <option>Seçim Yapınız</option>
-                        <option value="20">20</option>
-                        <option value="40">40</option>
-                        <option value="60">60</option>
-                        <option value="80">80</option>
-                        <option value="100">100</option>
+                        @foreach (var item in weightView)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
                     </select>
            
                 </div>
@@ -130,11 +129,10 @@
      
                     <select class="form-control" id="AmountSelectedValue_3" name="AmountSelectedValue_3">
                         <option>Seçim Yapınız</option>
-                        <option  value="100">100</option>
-                        <option  value="200">200</option>
-                        <option  value="400">400</option>
-                        <option  value="600">600</option>
-                        <option  value="800">800</option>
+                        @foreach (var item in amountView)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
                     </select>
                 </div>
 
@@ -142,7 +140,7 @@
             <div class="col-md-12 row">
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label"></label>
-                    <select class="form-control" id="fourthProduct" name="fourthProduct" >
+                    <select class="form-control dropdownList" id="fourthProduct" name="fourthProduct">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in listeView)
                         {
@@ -155,11 +153,10 @@
            
                     <select class="form-control" id="WeightSelectedValue_4" name="WeightSelectedValue_4">
                         <option>Seçim Yapınız</option>
-                        <option value="20">20</option>
-                        <option value="40">40</option>
-                        <option value="60">60</option>
-                        <option value="80">80</option>
-                        <option value="100">100</option>
+                        @foreach (var item in weightView)
+                        {
+                             <option  value="@item.Value">@item.Name</option>
+                        }
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -167,11 +164,10 @@
           
                     <select class="form-control" id="AmountSelectedValue_4" name="AmountSelectedValue_4">
                         <option>Seçim Yapınız</option>
-                        <option value="100">100</option>
-                        <option value="200">200</option>
-                        <option value="400">400</option>
-                        <option value="600">600</option>
-                        <option value="800">800</option>
+                        @foreach (var item in amountView)
+                        {
+                            <option value="@item.Value">@item.Name</option>
+                        }
                     </select>
                 </div>
 
@@ -210,12 +206,83 @@
         </form>
 
     </div>
-
+    <div class="container form-group" style="margin-top:25px">
+        <form id="ImageForm">
+            <h2>Resim Yükle</h2>
+            <input type="file" style="margin:10px" class="form-control" name="images" multiple>
+            <input type="submit" style="margin:10px" class="btn btn-primary" value="Kaydet">
+        </form>
+    </div>
     <div class="container">
         <div id="table"></div>
     </div>
+
+
+
+    <script>
+        document.getElementById("ImageForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Formun otomatik olarak gönderilmesini engeller
+
+            var formData = new FormData(this); // Form verilerini alır
+
+            fetch("/Home/AddPicture", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // İşlem tamamlandığında yapılacak işlemler
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Hata durumunda yapılacak işlemler
+                    console.error(error);
+                });
+        });
+    </script>
     <script>
 
+        var dropdowns = document.querySelectorAll('.dropdownList');
+        var selectedProducts = {}; // Seçilen ürünleri tutmak için bir nesne oluşturuyoruz
+
+        for (var i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].addEventListener('change', function () {
+                var selectedOption = this.options[this.selectedIndex];
+                var selectedProductId = selectedOption.value;
+
+                // Seçilen ürünü güncelle veya çıkar
+                if (selectedProducts[this.id] === selectedProductId) {
+                    delete selectedProducts[this.id];
+                } else {
+                    selectedProducts[this.id] = selectedProductId;
+                }
+
+                // Diğer dropdown'ları kontrol et
+                for (var j = 0; j < dropdowns.length; j++) {
+                    if (dropdowns[j].id !== this.id) {
+                        var options = dropdowns[j].querySelectorAll('option');
+                        for (var k = 0; k < options.length; k++) {
+                            var option = options[k];
+                            var optionProductId = option.value;
+                            var isDisabled = false;
+
+                            // Seçilen ürünlerle karşılaştır
+                            for (var id in selectedProducts) {
+                                if (selectedProducts.hasOwnProperty(id) && selectedProducts[id] === optionProductId) {
+                                    isDisabled = true;
+                                    break;
+                                }
+                            }
+
+                            option.disabled = isDisabled;
+                        }
+                    }
+                }
+            });
+        }
+        function Test(){
+            console.log(document.getElementById('secondProduct'));
+        }
         ///kordinatı almak için çalışan script 
         // tarayıcının konumunu alır
         function getLocation() {
@@ -256,7 +323,6 @@
 
         //seçili dropdownlardan gelen veriler alınır
         function SendForm() {
-
             var vehicleSize=0;
             var stringArray = new Array();
             startDistribution = new Array();
@@ -309,17 +375,18 @@
             //boş olmayan seçilmiş dropdown verileri kontrol edilir ve listeye alınır
 
             if (selectedProduct1 != NaN && selectedAmount1 != NaN && selectedProduct1 != "Seçim Yapınız" && selectedAmount1 != "Seçim Yapınız" && selectedWeight1 != "Seçim Yapınız") {
-                   
-              stringArray[0] = { "Miktar": parseInt(selectedAmount1), "UrunId": parseInt(selectedProduct1), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0 };
+
+                stringArray[0] = { "Miktar": parseInt(selectedAmount1), "UrunId": parseInt(selectedProduct1), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight1) };
+                
             } 
             if (selectedProduct2 != NaN && selectedAmount2 != NaN && selectedProduct2 != "Seçim Yapınız" && selectedAmount2 != "Seçim Yapınız" && selectedWeight2 != "Seçim Yapınız") {
-                stringArray[1] = { "Miktar": parseInt(selectedAmount2), "UrunId": parseInt(selectedProduct2), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0 };
+                stringArray[1] = { "Miktar": parseInt(selectedAmount2), "UrunId": parseInt(selectedProduct2), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight2) };
             }
             if (selectedProduct3 != NaN && selectedAmount3 != NaN && selectedProduct3 != "Seçim Yapınız" && selectedAmount3 != "Seçim Yapınız" && selectedWeight3 != "Seçim Yapınız") {
-                stringArray[2] = { "Miktar": parseInt(selectedAmount3), "UrunId": parseInt(selectedProduct3), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0 };
+                stringArray[2] = { "Miktar": parseInt(selectedAmount3), "UrunId": parseInt(selectedProduct3), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight3) };
             }  
             if ( selectedProduct4 != NaN && selectedAmount4 != NaN && selectedProduct4 != "Seçim Yapınız" && selectedAmount4 != "Seçim Yapınız" && selectedWeight4 != "Seçim Yapınız") {
-                stringArray[3] = { "Miktar": parseInt(selectedAmount4), "UrunId": parseInt(selectedProduct4), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0 ,"Latitude":0,"Longitude":0};
+                stringArray[3] = { "Miktar": parseInt(selectedAmount4), "UrunId": parseInt(selectedProduct4), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight4) };
             }
 
             //eklenen her verinin ağırlığı toplanır ve sistemde hazır olarak belirlenen değerle karşılaştırılır
@@ -395,7 +462,6 @@
                                                        <td>${data[i].urunAdi}</td>
                                                        <td> ${data[i].latitude}/ ${data[i].longitude}</td>
                                                       <td>${data[i].depoAdi} </td>
-                                                              <td>${data[i].miktar} </td>
                                                     </tr>`;
 
                         }
@@ -408,7 +474,6 @@
                               <th scope="col">Ürün Adı</th>
                               <th scope="col">Konum X/Y</th>
                               <th scope="col">Konum Adı</th>
-                              <th scope="col">Depo Miktarı</th>
                             </tr>
                            </thead>
                            <tbody>
@@ -440,20 +505,22 @@
             })
 
         }
-     
-      
-                function initMap(datacount) {
-          
-            var currentLocation = { lat: myLatitude, lng: myLongitude };
 
+
+        function initMap(datacount) {
+            var currentLocation = { lat: myLatitude, lng: myLongitude };
             var destinationLocations = [];
+            var duplicateCoordinateChecker = [];
             console.log(datacount);
             if (datacount.length > 0) {
                 for (var i = 0; i < datacount.length; i++) {
-                    destinationLocations.push({
-                        lat: datacount[i].latitude,
-                        lng: datacount[i].longitude
-                    });
+                    if (duplicateCoordinateChecker.indexOf(datacount[i].latitude) == -1) {
+                        destinationLocations.push({
+                            lat: datacount[i].latitude,
+                            lng: datacount[i].longitude
+                        });
+                        duplicateCoordinateChecker.push(datacount[i].latitude);
+                    }
                 }
             }
 
@@ -504,9 +571,38 @@
             directionsService.route(request, function (result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(result);
+
+                    var routes = result.routes;
+                    var distance = 0;
+                    var duration = 0;
+                    for (var i = 0; i < routes.length; i++) {
+                        var legs = routes[i].legs;
+                        for (var j = 0; j < legs.length; j++) {
+                            distance += legs[j].distance.value;
+                            duration += legs[j].duration.value;
+                        }
+                    }
+
+                    // Mesafeyi ve süreyi metrik birimlere dönüştür
+                    var distanceInKm = (distance / 1000).toFixed(1);
+                    var durationInHours = (duration / 3600).toFixed(1);
+
+                    // Harita üzerinde mesafe ve süreyi görüntülemek için bir bilgi penceresi oluştur
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: "Mesafe: " + distanceInKm + " km<br>Süre: " + durationInHours + " saat"
+                    });
+
+                    // Bilgi penceresini mevcut konumun üzerine yerleştir
+                    infoWindow.setPosition(currentLocation);
+                    infoWindow.open(map);
                 }
             });
         }
+
+
+
+          
+       
     </script>
 
     <script>

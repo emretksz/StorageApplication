@@ -2,6 +2,7 @@
 using Application.Interface;
 using Application.Services;
 using DataAccess.EntityFramework;
+using DataAccess.Interfaces;
 using DataAccess.Migrations;
 using Entities.Concrete;
 using Entities.Dtos;
@@ -28,14 +29,21 @@ namespace StorageApplication.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IProductServices _productManager;
         private readonly IStockServices _stockManager;
-        StorageApplicationContext db = new StorageApplicationContext();
-      
+        private readonly IWebHostEnvironment _evn;
+        private readonly IWeightDal _weightRepository;
+        private readonly IAmountDal _amounRepository;
 
-        public HomeController(ILogger<HomeController> logger, IProductServices productManager, IStockServices stockManager)
+        StorageApplicationContext db = new StorageApplicationContext();
+
+
+        public HomeController(ILogger<HomeController> logger, IProductServices productManager, IStockServices stockManager, IWebHostEnvironment evn, IWeightDal weightRepository, IAmountDal amounRepository)
         {
             _logger = logger;
             _productManager = productManager;
             _stockManager = stockManager;
+            _evn = evn;
+            _weightRepository = weightRepository;
+            _amounRepository = amounRepository;
         }
         public class Coordinate
         {
@@ -68,18 +76,20 @@ namespace StorageApplication.Controllers
         {
          
             ViewBag.Product = (await _productManager.GetAll()).Data;
-            var model = new EnumViewModel
-            {
-                WeightOptions = EnumHelper.GetEnumSelectList<StorageApplicationConst.Weight>(),
-                WeightSelectedValue = "Seçim Yapınız",
-                AmountOptions = EnumHelper.GetEnumSelectList<StorageApplicationConst.Amount>(),
-                AmountSelectedValue = "Seçim Yapınız"
-            };
-            return View(model);
+            ViewBag.Amount = await _amounRepository.GetAllAsync();
+            ViewBag.Weight = await _weightRepository.GetAllAsync();
+          
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> GetStoreLocationAndProduct([FromBody] List<ProductAndAmountDto> productAndAmountDto,string l,string l2)
         {
+
+            var sortedIds = productAndAmountDto
+             .OrderBy(a => a.Sirasi)
+             .Select(a => a.UrunId)
+             .ToList();
+
             List<ProductAndAmountDto> resultProductAndLocation = new List<ProductAndAmountDto>();
             List<ProductAndAmountDto> stoktanSilinecekler = new List<ProductAndAmountDto>();
             var sayfadanGelenUrunListesi = productAndAmountDto.Where(item => item != null).ToList();
@@ -221,7 +231,13 @@ namespace StorageApplication.Controllers
                         errorProductList.Add((await _productManager.GetById(error.UrunId)).Data.Name);
                     }
                 }
-               
+            
+                ///önceliğe göre ayarlama
+            sayfadaGosterilecekListe = sayfadaGosterilecekListe
+                .OrderByDescending(item => sortedIds.IndexOf(item.UrunId))
+                .ToList();
+
+
                 ///sayfada stoğu olmayan ürünleri göstermek için ilk ürününün içine bir liste eklenir bu liste sayfada açılarak hatalı ürünler alert olarak sayfaya basılır.
             sayfadaGosterilecekListe.FirstOrDefault().ErrorMessage= errorProductList;
 
@@ -233,6 +249,35 @@ namespace StorageApplication.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult AddPicture(List<IFormFile> images)
+        {
+            // Her bir resim için işlemler yapabilirsiniz
+            foreach (var image in images)
+            {
+                if (image != null && image.Length > 0)
+                {
+                    // Resimle ilgili işlemleri gerçekleştirin (örneğin, kaydetmek veya işlemek)
+                    // Örneğin, resimleri sunucuda bir klasöre kaydetmek için:
+                    string folder = _evn.WebRootPath;   
+                    string specificFolder = Path.Combine(folder, "UploadImage");
+
+                    //guid Id aynı resim kayıt işlemi olmamasını sağlar. Kapatıldı  yüklenecek resim adları birbirinden farklı olmalı !!!!!!!!!!!!
+                    var fileName = /*Guid.NewGuid().ToString() + "_" +*/ image.FileName;
+                    var filePath = Path.Combine(specificFolder, fileName);
+                    if (!Directory.Exists(specificFolder))
+                        Directory.CreateDirectory(specificFolder);
+                    
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        image.CopyTo(fileStream);
+                    }
+                }
+            }
+
+            // Gerekli işlemleri tamamladıktan sonra uygun bir yanıt döndürün
+            return Json("ok");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

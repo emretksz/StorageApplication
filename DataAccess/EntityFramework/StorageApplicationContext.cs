@@ -21,7 +21,9 @@ namespace DataAccess.EntityFramework
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<Type> Types { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
-        public virtual DbSet<Store> Stores { get; set; }
+        public virtual DbSet<Store> Stores { get; set; }       
+        public virtual DbSet<Weight> Weights { get; set; }
+        public virtual DbSet<Amount> Amounts { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"server=.\;Database=StorageApplicationContext;Trusted_Connection=true");

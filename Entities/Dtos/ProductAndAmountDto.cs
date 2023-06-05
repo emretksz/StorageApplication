@@ -18,6 +18,7 @@ namespace Entities.Dtos
         public int DepoId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public int Sirasi { get; set; }
         public List<string> ErrorMessage { get; set; }
     }
 }
