@@ -13,6 +13,8 @@ namespace Application.Interface
     {
 
         public Task<string>RemoveStockForStore(List<RemoveStockDto> productList);
-      
+        public Task<List<RemoveStockDto>> GetRemoveStockProductAndCount(List<ProductAndAmountDto> sayfadaGosterilecekListe, List<ProductAndAmountDto> stoktanSilinecekler);
+
+
     }
 }

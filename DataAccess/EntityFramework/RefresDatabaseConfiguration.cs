@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Interfaces;
+using DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,12 @@ namespace DataAccess.EntityFramework
 {
     public class RefresDatabaseConfiguration : BackgroundService
     {
+        ILoggerDal _loggerDal;
+
+        public RefresDatabaseConfiguration(ILoggerDal loggerDal)
+        {
+            _loggerDal = loggerDal;
+        }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -22,11 +30,13 @@ namespace DataAccess.EntityFramework
                 {
                     try
                     {
+                        BaseLoggerRepository baseLoggerRepository = new BaseLoggerRepository();
+                        var id = await baseLoggerRepository.CreateAsyncReturnId(new() { LogName="Veritabanı Logu"});
                         using (StorageApplicationContext db = new StorageApplicationContext())
                         {
                             var productList = await db.Products.ToListAsync();
                             var storeList = await db.Stores.ToListAsync();
-                            var stock = await db.Stocks.Include(a => a.Store).ToListAsync();
+                            var stock = await db.Stocks.Include(a => a.Store).Include(a=>a.Product).ToListAsync();
 
                             foreach (var storeItem in storeList)
                             {
@@ -36,7 +46,16 @@ namespace DataAccess.EntityFramework
                                     item.StockAmount = 300;
                                     db.Update(item);
                                     await db.SaveChangesAsync();
-
+                                   await _loggerDal.CreateAsync(new()
+                                    {
+                                        IslemZamani=DateTime.Now,
+                                        BaseLoggerId= Convert.ToInt32(id),
+                                        UrunAdi=item.Product.Name,
+                                        UrunMiktarı=300,
+                                        Konum=item.Store.Konum,
+                                       UrunId=Convert.ToInt32(item.Product.Id),
+                                       DepoId=Convert.ToInt32(storeItem.Id),
+                                    });
                                 }
 
                             }

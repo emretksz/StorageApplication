@@ -1,5 +1,7 @@
 ﻿using Application.Interface;
 using Application.Services;
+using DataAccess.Interfaces;
+using DataAccess.Repositories;
 using IoC;
 using Microsoft.Extensions.DependencyModel;
 
@@ -16,6 +18,7 @@ namespace StorageApplication.Helpers
             services.AddTransient<IStoreServices,StoreManager>();
             services.AddTransient<IVehicleServices,VehicleManager>();
             services.AddTransient<IInformationServies,InformationManager>();
+            services.AddTransient<ILoggerDal,LoggerRepository>();
 
 
         }

@@ -9,51 +9,21 @@ namespace Entities.Enums
    public class Enums
     {
 
-        //Colorları eklemek gerekecek.
-       public enum Colors
+        public enum PyhsicalWeight
         {
-
-        }
-        public enum Gender
-        {
-            Kız=1,
-            Erkek=2
-        }
-        public enum Age
-        {
-          ÜçAltı=1,
-          AltıDokuz=2,
-          OnOnDört=3,
-          OndörtOnSekiz=4,
+            Yol=1,//
+            Orman=2,
+            Dag=3,
+            Su=4,
         }
 
-        public enum StockStatus
+       public enum TypeWeight
         {
-            Az,
-            BitmekUzere,
-            Çok,
-            Yok,
-            UrunEklendi
-        }
-
-         public enum ShippingStasus
-        {
-            Acil,
-            Beklemede,
-            Önemli,
-            Normal,
-        }
-        public enum Depocu
-        {
-            Beklemede,
-            Hazırlanıyor,
-            Tamamlandı,
-        }
-        public enum Orders
-        {
-            tamamlandı,
-            iade,
-            iptal
+            Koruluk=1,
+            Tarim=2,
+            Calilik=3,
+            Gol=4,
+            Akarsu=5,
         }
     }
    

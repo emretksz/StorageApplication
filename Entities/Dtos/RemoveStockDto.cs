@@ -12,5 +12,7 @@ namespace Entities.Dtos
         public int ProductId { get; set; }
         public int StoreId { get; set; }
         public int Amount { get; set; }
+
+        public int LogId { get; set; }
     }
 }

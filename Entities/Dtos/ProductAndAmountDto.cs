@@ -15,10 +15,13 @@ namespace Entities.Dtos
         public string Konum { get; set; }
        
         public string DepoAdi { get; set; }
+        public string Mod { get; set; }
+        public string Zaman { get; set; }
         public int DepoId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public int Sirasi { get; set; }
+        public int Agirlik { get; set; }
         public List<string> ErrorMessage { get; set; }
+        public List<int> logIdTemp { get; set; }
     }
 }

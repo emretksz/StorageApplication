@@ -12,9 +12,9 @@ namespace Entities.Concrete
     /// </summary>
     public class Property:BaseEntity,IEntity
     {
-        public int ?Height { get; set; }
-        public int? Width { get; set; }
-        public int ?Length { get; set; }
-        //public State State { get; set; }
+        public double ?Height { get; set; }
+        public double? Width { get; set; }
+        public double? Length { get; set; }
+        public Type Type { get; set; }
     }
 }

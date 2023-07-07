@@ -11,7 +11,7 @@ namespace Application.Constants
 
         public static int VehicleSize()
         {
-            return 200;
+            return 400;
         }
     }
 }

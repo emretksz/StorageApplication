@@ -12,9 +12,10 @@ namespace Entities.Concrete
     /// </summary>
     public class State:BaseEntity,IEntity
     {
-     
-        public bool ThereIsAWay { get; set; }
-        public Type Type { get; set; }
-        public  Property Property { get; set; }
+
+        public string Name { get; set; }
+        public bool? ThereIsAWay { get; set; }
+        //public Type? Type { get; set; }
+        //public  Property ?Property { get; set; }
     }
 }

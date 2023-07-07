@@ -24,6 +24,8 @@ namespace DataAccess.EntityFramework
         public virtual DbSet<Store> Stores { get; set; }       
         public virtual DbSet<Weight> Weights { get; set; }
         public virtual DbSet<Amount> Amounts { get; set; }
+        public virtual DbSet<LogModel> LogModels { get; set; }
+        public virtual DbSet<BaseLogger> BaseLoggers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"server=.\;Database=StorageApplicationContext;Trusted_Connection=true");

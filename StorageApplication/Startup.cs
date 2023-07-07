@@ -60,7 +60,7 @@ namespace WebApp
                 options.Cookie.HttpOnly = true;
      
             });
-
+          
             services.Configure<FormOptions>(options =>
             {
                 options.MultipartBodyLengthLimit = 100000000;

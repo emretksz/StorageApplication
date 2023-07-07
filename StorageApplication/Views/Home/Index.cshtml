@@ -14,6 +14,7 @@
 <html>
 <head>
     <title>Google Haritalar</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key="></script>
     <style>
         #map {
             height: 400px;
@@ -34,7 +35,7 @@
             <div class="col-md-12 row">
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label" style="margin-top:10px">Ürünler</label>
-                    <select class="form-control dropdownList" id="firstProduct" onchange="Test()" name="firstProduct">
+                    <select class="form-control dropdownList" id="firstProduct"  name="firstProduct">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in listeView)
                         {
@@ -181,7 +182,12 @@
                 </div>
                 <div class="col-md-3" style="margin-top:15px">
                     <label>
-                        <input type="radio" name="onemli" value="option1" checked /> Önemli
+                        <input type="radio" name="onemli" value="önemli" checked /> Önemli
+                    </label>
+                </div>  
+                <div class="col-md-3" style="margin-top:15px">
+                    <label id="yazdir">
+                     
                     </label>
                 </div>
 
@@ -196,11 +202,13 @@
                 </div>
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label"></label>
-                    <input type="radio" name="onemli" value="option1" /> Önemsiz
-                </div>
+
+                    @*gitsin 2 sp'ye!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+                    <input type="radio"  name="onemli" value="onemsiz" /> Önemsiz
+                </div>      
+               
 
             </div>
-
 
             <button type="button" onclick="SendForm()" class="btn btn-primary">Submit</button>
         </form>
@@ -220,9 +228,10 @@
 
 
     <script>
-        document.getElementById("ImageForm").addEventListener("submit", function (event) {
+     
+            document.getElementById("ImageForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Formun otomatik olarak gönderilmesini engeller
-
+            SendForm();
             var formData = new FormData(this); // Form verilerini alır
 
             fetch("/Home/AddPicture", {
@@ -232,7 +241,24 @@
                 .then(response => response.json())
                 .then(data => {
                     // İşlem tamamlandığında yapılacak işlemler
-                    console.log(data);
+                    var label = "";
+                    label += data.state.name + "</br>" + data.type.name + " - " + "</br>";
+
+                    if (data.property != null) {
+                        if (data.property.height != null ) {
+                            label +="Yüksekliği: "+data.property.height+",";
+                        }
+                        if (data.property.length != null) {
+                            label += "Uzunluğu: "+data.property.length + ",";
+                        }
+                        if (data.property.width != null) {
+                            label += "Genişliği: " + data.property.width;
+                        }
+                    }  
+                       
+                
+                    $('#yazdir').html(label);
+            
                 })
                 .catch(error => {
                     // Hata durumunda yapılacak işlemler
@@ -280,9 +306,7 @@
                 }
             });
         }
-        function Test(){
-            console.log(document.getElementById('secondProduct'));
-        }
+     
         ///kordinatı almak için çalışan script 
         // tarayıcının konumunu alır
         function getLocation() {
@@ -294,6 +318,7 @@
         }
         var myLatitude="";
          var myLongitude=";"
+
         function showPosition(position) {
             myLatitude = position.coords.latitude;
             myLongitude = position.coords.longitude;
@@ -320,9 +345,10 @@
        
         var startDistribution = new Array();
 
-
+        var logId = [];
         //seçili dropdownlardan gelen veriler alınır
         function SendForm() {
+            logId = [];
             var vehicleSize=0;
             var stringArray = new Array();
             startDistribution = new Array();
@@ -349,10 +375,6 @@
             var amount2 = document.getElementById('AmountSelectedValue_2');
             var amount3 = document.getElementById('AmountSelectedValue_3');
             var amount4 = document.getElementById('AmountSelectedValue_4');
-            console.log(amount1.value);
-            console.log(amount2.value);
-            console.log(amount3.value);
-            console.log(amount4.value);
          
             // Seçilen değeri yakalayın
             var selectedProduct1 = product1.value;
@@ -369,36 +391,37 @@
             var selectedAmount2 = amount2.value;
             var selectedAmount3 = amount3.value;
             var selectedAmount4 = amount4.value;
-            
-          
-             
+
+
+            var onem = document.querySelector('input[name="onemli"]:checked').value;
+            var mod = document.querySelector('input[name="radioOption"]:checked').value;
             //boş olmayan seçilmiş dropdown verileri kontrol edilir ve listeye alınır
 
             if (selectedProduct1 != NaN && selectedAmount1 != NaN && selectedProduct1 != "Seçim Yapınız" && selectedAmount1 != "Seçim Yapınız" && selectedWeight1 != "Seçim Yapınız") {
 
-                stringArray[0] = { "Miktar": parseInt(selectedAmount1), "UrunId": parseInt(selectedProduct1), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight1) };
+                stringArray[0] = { "Miktar": parseInt(selectedAmount1), "UrunId": parseInt(selectedProduct1), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Agirlik": parseInt(selectedWeight1), "Mod": mod,"Zaman":onem };
                 
             } 
             if (selectedProduct2 != NaN && selectedAmount2 != NaN && selectedProduct2 != "Seçim Yapınız" && selectedAmount2 != "Seçim Yapınız" && selectedWeight2 != "Seçim Yapınız") {
-                stringArray[1] = { "Miktar": parseInt(selectedAmount2), "UrunId": parseInt(selectedProduct2), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight2) };
+                stringArray[1] = { "Miktar": parseInt(selectedAmount2), "UrunId": parseInt(selectedProduct2), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Agirlik": parseInt(selectedWeight2), "Mod": mod, "Zaman": onem };
             }
             if (selectedProduct3 != NaN && selectedAmount3 != NaN && selectedProduct3 != "Seçim Yapınız" && selectedAmount3 != "Seçim Yapınız" && selectedWeight3 != "Seçim Yapınız") {
-                stringArray[2] = { "Miktar": parseInt(selectedAmount3), "UrunId": parseInt(selectedProduct3), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight3) };
+                stringArray[2] = { "Miktar": parseInt(selectedAmount3), "UrunId": parseInt(selectedProduct3), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Agirlik": parseInt(selectedWeight3), "Mod": mod, "Zaman": onem };
             }  
             if ( selectedProduct4 != NaN && selectedAmount4 != NaN && selectedProduct4 != "Seçim Yapınız" && selectedAmount4 != "Seçim Yapınız" && selectedWeight4 != "Seçim Yapınız") {
-                stringArray[3] = { "Miktar": parseInt(selectedAmount4), "UrunId": parseInt(selectedProduct4), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Sirasi": parseInt(selectedWeight4) };
+                stringArray[3] = { "Miktar": parseInt(selectedAmount4), "UrunId": parseInt(selectedProduct4), "UrunAdi": "", "Konum": "", "DepoAdi": "", "DepoId": 0, "Latitude": 0, "Longitude": 0, "Agirlik": parseInt(selectedWeight4), "Mod": mod, "Zaman": onem };
             }
 
             //eklenen her verinin ağırlığı toplanır ve sistemde hazır olarak belirlenen değerle karşılaştırılır
             //ağrılık kapasiteden büyükse uyarı çıkar
-            if (selectedWeight1!="Seçim Yapınız") 
-                vehicleSize += parseInt(selectedWeight1);
-            if (selectedWeight2 != "Seçim Yapınız")
-                vehicleSize += parseInt(selectedWeight2);
-            if (selectedWeight3 != "Seçim Yapınız")
-                vehicleSize += parseInt(selectedWeight3);
-            if (selectedWeight4 != "Seçim Yapınız")
-                vehicleSize += parseInt(selectedWeight4);
+            if (selectedAmount1 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedAmount1);
+            if (selectedAmount2 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedAmount2);
+            if (selectedAmount3 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedAmount3);
+            if (selectedAmount4 != "Seçim Yapınız")
+                vehicleSize += parseInt(selectedAmount4);
 
             if (parseInt(vehicleSize)>'@vehicleSize') {
                 swal({
@@ -410,15 +433,14 @@
                 
                 return;
             }
-          
+
             $.ajax({
-                url: '@Url.Action("GetStoreLocationAndProduct","Home")?l=' + myLatitude+"&l2="+myLongitude,
+                url: '@Url.Action("GetStoreLocationAndProduct","Home")?l=' + myLatitude + "&l2=" + myLongitude + "&onemli=" + onem,
                 type: "POST",
                 data: JSON.stringify(stringArray),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (data) {
-                  console.log("sonuç",data);
                   //tabloyu temizle
                   document.getElementById('table').innerHTML="";
 
@@ -433,7 +455,7 @@
                         return;
                     }
                     if (data.length > 0) {
-                        
+                        console.log(data);
                         ///hatalı gelenm ürünleri alert olarak gösterilecek yer
                         if (data[0].errorMessage.length > 0) {
                             var errorList = "<span>" + "Stokta Olmayan İsterler" + "</span>" + "</br>";
@@ -454,16 +476,49 @@
                             });
                             //return;
                         }
-
+                        var duplicateCoordinateChecker = [];
+                        var productList = [];
+                       
+                        var groupedData = {};
                         for (var i = 0; i < data.length; i++) {
-                      
-                            stringTemplate += ` <tr>
-                                                      <th scope="row">${i+1}</th>
-                                                       <td>${data[i].urunAdi}</td>
-                                                       <td> ${data[i].latitude}/ ${data[i].longitude}</td>
-                                                      <td>${data[i].depoAdi} </td>
-                                                    </tr>`;
+                            var coordinates = `${data[i].latitude}/${data[i].longitude}`;
+                            if (groupedData[coordinates]) {
+                                groupedData[coordinates].push(data[i]);
+                            } else {
+                                groupedData[coordinates] = [data[i]];
+                            }
+                        }
 
+                        for (var i = 0; i < data[0].logIdTemp.length; i++) {
+                            if (data[0].logIdTemp[i] != undefined && data[0].logIdTemp[i] != null) {
+                                logId.push(data[0].logIdTemp[i]);
+                            }
+                         
+                        }
+
+                        var stringTemplate = '';
+                        
+                        for (var coordinates in groupedData) {
+                            var adListesi="";
+                            var depoAdim="";
+                            if (groupedData.hasOwnProperty(coordinates)) {
+                                var group = groupedData[coordinates];
+                                for (var j = 0; j < group.length; j++) {
+                                    if (j-1== group.length) {
+                                        adListesi += group[j].urunAdi ;
+                                    }
+                                    else{
+                                        adListesi += group[j].urunAdi + "/";
+                                    }
+                                    depoAdim = group[j].depoAdi;
+                                }
+                                stringTemplate += `<tr>
+                                            <th scope="row"></th>
+                                             <td>${adListesi}</td>
+                                            <td>${coordinates}</td>
+                                             <td>${depoAdim}</td>
+                                          </tr>`;
+                            }
                         }
 
                         var htmls = `
@@ -486,15 +541,12 @@
 
                     }
                     else{
-                     
                             swal({
                                 title: "Dikkat",
                                 text: "Seçilen Ürün ve Adet bulunamadı",
                                 icon: "warning",
                                 button: "Tamam",
                             });
-                       
-
                     }
                  
                 },
@@ -511,7 +563,7 @@
             var currentLocation = { lat: myLatitude, lng: myLongitude };
             var destinationLocations = [];
             var duplicateCoordinateChecker = [];
-            console.log(datacount);
+
             if (datacount.length > 0) {
                 for (var i = 0; i < datacount.length; i++) {
                     if (duplicateCoordinateChecker.indexOf(datacount[i].latitude) == -1) {
@@ -559,7 +611,6 @@
             }
 
             var radioValue = document.querySelector('input[name="radioOption"]:checked').value;
-            console.log(radioValue);
             var request = {
                 origin: currentLocation,
                 destination: destinationLocations[destinationLocations.length - 1],
@@ -567,7 +618,8 @@
                 optimizeWaypoints: true,
                 travelMode: radioValue == "Yaya" ? google.maps.TravelMode.WALKING : google.maps.TravelMode.DRIVING
             };
-
+                var distanceInKm;
+                    var durationInHours;
             directionsService.route(request, function (result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(result);
@@ -584,8 +636,9 @@
                     }
 
                     // Mesafeyi ve süreyi metrik birimlere dönüştür
-                    var distanceInKm = (distance / 1000).toFixed(1);
-                    var durationInHours = (duration / 3600).toFixed(1);
+                    distanceInKm = (distance / 1000).toFixed(1);
+                    durationInHours = (duration / 3600).toFixed(1);
+                    
 
                     // Harita üzerinde mesafe ve süreyi görüntülemek için bir bilgi penceresi oluştur
                     var infoWindow = new google.maps.InfoWindow({
@@ -597,6 +650,24 @@
                     infoWindow.open(map);
                 }
             });
+            setTimeout(()=>{
+         
+
+            var requestData = {
+                    logId: logId,
+                time: distanceInKm + 'Km' + ',' + durationInHours + ' saat/dakika'
+            };
+
+            $.ajax({
+                url: '@Url.Action("LogAddDistance", "Home")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function () {
+                    // Başarılı olduğunda yapılacak işlemler
+                }
+            });
+            }, 1500)
         }
 
 

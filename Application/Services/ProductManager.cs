@@ -7,6 +7,7 @@ using Entities.Concrete;
 using Entities.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -67,6 +68,10 @@ namespace Application.Services
         {
             return await _productDal.GetProductAndAmount(productAndAmountDtos);
         }
+        public async Task<List<ProductAndAmountDto>> GetProductAndAmountForBestStores(List<ProductAndAmountDto> productAndAmountDtos)
+        {
+            return await _productDal.GetProductAndAmountForBestStores(productAndAmountDtos);
+        }
 
         //kullanma
         public async Task<IResult> Update(Product entity)
@@ -88,5 +93,26 @@ namespace Application.Services
             }
             return new ErrorResult(ConstMessages.ProductError);
         }
+
+        public async Task<ProductAmountAndLocation> FindBestCordinat( List<ProductAndAmountDto> productAndAmount)
+        {
+            List<Coordinate> coordinates = new List<Coordinate>();// Veritabanından koordinatları alır
+            List<ProductAndAmountDto> resultProductAndLocation = new List<ProductAndAmountDto>();// Veritabanından koordinatları alır
+            foreach (var product in productAndAmount)
+            {
+                var xy = product.Konum.Split(",");
+                coordinates.Add(new() { Latitude = Convert.ToDouble(xy[0], CultureInfo.InvariantCulture), Longitude = Convert.ToDouble(xy[1], CultureInfo.InvariantCulture) });
+                product.Latitude = Convert.ToDouble(xy[0], CultureInfo.InvariantCulture);
+                product.Longitude = Convert.ToDouble(xy[1], CultureInfo.InvariantCulture);
+                resultProductAndLocation.Add(product);
+            }
+            ProductAmountAndLocation model = new ProductAmountAndLocation()
+            {
+                ProductAndAmount = resultProductAndLocation,
+                Cordinate = coordinates
+            };
+            return model; //tüm kordinatlar ve ürünler 
+        }
+       
     }
 }

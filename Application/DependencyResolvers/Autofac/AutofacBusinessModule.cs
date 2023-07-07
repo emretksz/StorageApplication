@@ -29,6 +29,8 @@ namespace Application.DependencyResolvers.Autofac
             builder.RegisterType<Mapper>().As<IMapper>().SingleInstance();
             builder.RegisterType<AmountRepository>().As<IAmountDal>().SingleInstance();
             builder.RegisterType<WeightRepository>().As<IWeightDal>().SingleInstance();
+            builder.RegisterType<LoggerRepository>().As<ILoggerDal>().SingleInstance();
+            builder.RegisterType<BaseLoggerRepository>().As<IBaseLoggerDal >().SingleInstance();
 
             //manager dependency
             builder.RegisterType<ProductManager>().As<IProductServices>().SingleInstance();
@@ -36,6 +38,8 @@ namespace Application.DependencyResolvers.Autofac
             builder.RegisterType<StoreManager>().As<IStoreServices>().SingleInstance();
             builder.RegisterType<StockManager>().As<IStockServices>().SingleInstance();
             builder.RegisterType<VehicleManager>().As<IVehicleServices>().SingleInstance();
+            builder.RegisterType<PhysicalInformationManager>().As<IPhysicalInformationServices>().SingleInstance();
+            builder.RegisterType<LoggerManager>().As<ILoggerServices>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

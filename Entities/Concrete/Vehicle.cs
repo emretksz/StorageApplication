@@ -14,9 +14,7 @@ namespace Entities.Concrete
     {
         public string Konum { get; set; }
         public int VehicleSize { get; set; }
-        public int VehicleSizeDefault { get { return 200; } }
         public int Maliyet { get; set; }
-        public int MaliyetDefault { get { return 200; } }
        public int ProductId { get; set; }
         //public List<Product> Product { get; set; }
    

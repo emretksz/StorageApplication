@@ -11,6 +11,7 @@ namespace DataAccess.Interfaces
 {
     public interface IProductDal : IRepository<Product>
     {
-        public Task<List<ProductAndAmountDto>> GetProductAndAmount(List<ProductAndAmountDto> productAndAmountDtos);
+        public Task<List<ProductAndAmountDto>> GetProductAndAmount(List<ProductAndAmountDto> productAndAmountDtos); 
+        public Task<List<ProductAndAmountDto>> GetProductAndAmountForBestStores(List<ProductAndAmountDto> productAndAmountDtos);
     }
 }
