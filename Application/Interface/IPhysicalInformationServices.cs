@@ -11,6 +11,6 @@ namespace Application.Interface
     public interface IPhysicalInformationServices:IBaseService<PhysicalInformation>
     {
 
-        public Task<StateFunctionDto> FizikselBilgiler(List<State> list);
+        public Task<StateFunctionDto> FizikselBilgiler(List<Prediction> result);
     }
 }

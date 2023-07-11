@@ -11,6 +11,6 @@ namespace DataAccess.Interfaces
 {
     public interface IPhysicalInformationDal : IRepository<PhysicalInformation>
     {
-        public Task<StateFunctionDto> GetState(State state);
+        public Task<List<StateFunctionDto>> GetState(State state);
     }
 }

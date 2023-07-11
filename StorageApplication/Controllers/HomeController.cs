@@ -257,8 +257,10 @@ namespace StorageApplication.Controllers
             return sayfadaGosterilecekListe;
         }
         [HttpPost]
-        public async Task<IActionResult> AddPicture(List<IFormFile> images)
+        public async Task<IActionResult> AddPicture(List<IFormFile> images,string jsonData)
         {
+
+            var list = JsonConvert.DeserializeObject<PredictionsResult>(jsonData);
             // Her bir resim için işlemler yapabilirsiniz
             foreach (var image in images)
             {
@@ -283,16 +285,7 @@ namespace StorageApplication.Controllers
             }
 
             // Gerekli işlemleri tamamladıktan sonra uygun bir yanıt döndürün
-            List<State> state = new List<State>();
-            state.Add(new()
-            {
-                Name = "Orman",
-            });
-            state.Add(new()
-            {
-                Name = "Su",
-            });
-            var result = await physicalInformationServices.FizikselBilgiler(state);
+            var result = await physicalInformationServices.FizikselBilgiler(list.Predictions.Where(a => a.Class != "bina").OrderByDescending(a=>a.Confidence).ToList());
             var convertList = JsonConvert.SerializeObject(result);
             HttpContext.Session.SetString("stateFunc", convertList);
             return Json(result);
@@ -319,7 +312,7 @@ namespace StorageApplication.Controllers
             LogAndStateDto dto = new()
             {
                 LogModel = logModel,
-                StateFunctionDto = stateModel
+                Prediction = stateModel
 
             };
            

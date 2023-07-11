@@ -1,27 +1,12 @@
-Depo Adı teknoloji.isparta.edu.tr
-Depo Konumu 37.830019, 30.523909
-Depo Büyüklüğü 300
-Ürün Adı Coco-Cola
-
 Depo Adı ispartamyo.isparta.edu.tr
 Depo Konumu 37.8286760581812, 30.534865273187467
-Depo Büyüklüğü 300
+Depo Büyüklüğü 200
 Ürün Adı Coco-Cola
 
 Depo Adı keciborlumyo.isparta.edu.tr
 Depo Konumu 37.949161448915774, 30.30400184654423
 Depo Büyüklüğü 300
 Ürün Adı Coco-Cola
-
-Depo Adı teknoloji.isparta.edu.tr
-Depo Konumu 37.830019, 30.523909
-Depo Büyüklüğü 300
-Ürün Adı ICE-TEA
-
-Depo Adı ispartamyo.isparta.edu.tr
-Depo Konumu 37.8286760581812, 30.534865273187467
-Depo Büyüklüğü 300
-Ürün Adı ICE-TEA
 
 Depo Adı osbmyo.isparta.edu.tr
 Depo Konumu 37.88837748524481, 30.408611858682665

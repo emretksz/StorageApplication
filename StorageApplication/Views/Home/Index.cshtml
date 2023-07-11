@@ -23,6 +23,9 @@
         .dropdownList{
 
         }
+
+        .dropdownListWeight {
+        }
     </style>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="~/js/indexdropdown.js"></script>
@@ -45,7 +48,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label" style="margin-top:10px">Ağırlık</label>
-                    <select class="form-control" id="WeightSelectedValue_1"  name="WeightSelectedValue_1">
+                    <select class="form-control dropdownListWeight" id="WeightSelectedValue_1" name="WeightSelectedValue_1">
                         <option>Seçim Yapınız</option>
                          @foreach (var item in weightView)
                         {
@@ -82,7 +85,7 @@
                     <label for="disabledTextInput" class="form-label"></label>
                
 
-                    <select class="form-control" id="WeightSelectedValue_2" name="WeightSelectedValue_2">
+                    <select class="form-control dropdownListWeight" id="WeightSelectedValue_2" name="WeightSelectedValue_2">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in weightView)
                         {
@@ -116,7 +119,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label"></label>
-                    <select class="form-control" id="WeightSelectedValue_3" name="WeightSelectedValue_3">
+                    <select class="form-control dropdownListWeight" id="WeightSelectedValue_3" name="WeightSelectedValue_3">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in weightView)
                         {
@@ -152,7 +155,7 @@
                 <div class="col-md-3">
                     <label for="disabledTextInput" class="form-label"></label>
            
-                    <select class="form-control" id="WeightSelectedValue_4" name="WeightSelectedValue_4">
+                    <select class="form-control dropdownListWeight" id="WeightSelectedValue_4" name="WeightSelectedValue_4">
                         <option>Seçim Yapınız</option>
                         @foreach (var item in weightView)
                         {
@@ -217,54 +220,66 @@
     <div class="container form-group" style="margin-top:25px">
         <form id="ImageForm">
             <h2>Resim Yükle</h2>
-            <input type="file" style="margin:10px" class="form-control" name="images" multiple>
-            <input type="submit" style="margin:10px" class="btn btn-primary" value="Kaydet">
+            <input type="file" style="margin:10px" id="file"  class="form-control" name="images" multiple>
+            <input type="submit" style="margin:10px" class="btn btn-primary" value="Kaydet">@* type="submit"*@
         </form>
     </div>
     <div class="container">
         <div id="table"></div>
     </div>
-
-
+    <style>
+        .codeblock {
+            border-width: 1px;
+            border-color: #cbd5e0 border-radius: 0.25rem;
+            display: block;
+            padding: 0.75rem;
+            background-color: white;
+        }
+    </style>
+    <div class="result" id="resultContainer">
+        <div class="divider"></div>
+     
+        <pre id="output" class="codeblock">  </pre>
+    </div>
 
     <script>
      
-            document.getElementById("ImageForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Formun otomatik olarak gönderilmesini engeller
-            SendForm();
-            var formData = new FormData(this); // Form verilerini alır
+        //    document.getElementById("ImageForm").addEventListener("submit", function (event) {
+        //    event.preventDefault(); // Formun otomatik olarak gönderilmesini engeller
+        //    SendForm();
+        //    var formData = new FormData(this); // Form verilerini alır
 
-            fetch("/Home/AddPicture", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // İşlem tamamlandığında yapılacak işlemler
-                    var label = "";
-                    label += data.state.name + "</br>" + data.type.name + " - " + "</br>";
+        //    fetch("/Home/AddPicture", {
+        //        method: "POST",
+        //        body: formData
+        //    })
+        //        .then(response => response.json())
+        //        .then(data => {
+        //            // İşlem tamamlandığında yapılacak işlemler
+        //            var label = "";
+        //            label += data.state.name + "</br>" + data.type.name + " - " + "</br>";
 
-                    if (data.property != null) {
-                        if (data.property.height != null ) {
-                            label +="Yüksekliği: "+data.property.height+",";
-                        }
-                        if (data.property.length != null) {
-                            label += "Uzunluğu: "+data.property.length + ",";
-                        }
-                        if (data.property.width != null) {
-                            label += "Genişliği: " + data.property.width;
-                        }
-                    }  
+        //            if (data.property != null) {
+        //                if (data.property.height != null ) {
+        //                    label +="Yüksekliği: "+data.property.height+",";
+        //                }
+        //                if (data.property.length != null) {
+        //                    label += "Uzunluğu: "+data.property.length + ",";
+        //                }
+        //                if (data.property.width != null) {
+        //                    label += "Genişliği: " + data.property.width;
+        //                }
+        //            }  
                        
                 
-                    $('#yazdir').html(label);
+        //            $('#yazdir').html(label);
             
-                })
-                .catch(error => {
-                    // Hata durumunda yapılacak işlemler
-                    console.error(error);
-                });
-        });
+        //        })
+        //        .catch(error => {
+        //            // Hata durumunda yapılacak işlemler
+        //            console.error(error);
+        //        });
+        //});
     </script>
     <script>
 
@@ -305,43 +320,47 @@
                     }
                 }
             });
+        }     
+        var dropdownListWeight = document.querySelectorAll('.dropdownListWeight');
+        var selectedWeight = {}; // Seçilen Ağırlıklar
+
+        for (var i = 0; i < dropdownListWeight.length; i++) {
+            dropdownListWeight[i].addEventListener('change', function () {
+                var selectedOption = this.options[this.selectedIndex];
+                var selectedProductId = selectedOption.value;
+
+                // Seçilen ürünü güncelle veya çıkar
+                if (selectedWeight[this.id] === selectedProductId) {
+                    delete selectedWeight[this.id];
+                } else {
+                    selectedWeight[this.id] = selectedProductId;
+                }
+
+                // Diğer dropdown'ları kontrol et
+                for (var j = 0; j < dropdownListWeight.length; j++) {
+                    if (dropdownListWeight[j].id !== this.id) {
+                        var options = dropdownListWeight[j].querySelectorAll('option');
+                        for (var k = 0; k < options.length; k++) {
+                            var option = options[k];
+                            var optionProductId = option.value;
+                            var isDisabled = false;
+
+                            // Seçilen ağırlıklarla karşılaştır
+                            for (var id in selectedWeight) {
+                                if (selectedWeight.hasOwnProperty(id) && selectedWeight[id] === optionProductId) {
+                                    isDisabled = true;
+                                    break;
+                                }
+                            }
+
+                            option.disabled = isDisabled;
+                        }
+                    }
+                }
+            });
         }
      
-        ///kordinatı almak için çalışan script 
-        // tarayıcının konumunu alır
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                console.log("Tarayıcınızda konum hizmetleri desteklenmiyor.");
-            }
-        }
-        var myLatitude="";
-         var myLongitude=";"
 
-        function showPosition(position) {
-            myLatitude = position.coords.latitude;
-            myLongitude = position.coords.longitude;
-
-            // Konum bilgilerini kullanarak yapmak istediğiniz işlemleri gerçekleştirin
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    console.log("Konum erişimi reddedildi.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    console.log("Konum bilgilerine erişilemiyor.");
-                    break;
-                case error.TIMEOUT:
-                    console.log("İstek zaman aşımına uğradı.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    console.log("Bilinmeyen bir hata oluştu.");
-                    break;
-            }
-        }
        
         var startDistribution = new Array();
 
@@ -558,126 +577,9 @@
 
         }
 
-
-        function initMap(datacount) {
-            var currentLocation = { lat: myLatitude, lng: myLongitude };
-            var destinationLocations = [];
-            var duplicateCoordinateChecker = [];
-
-            if (datacount.length > 0) {
-                for (var i = 0; i < datacount.length; i++) {
-                    if (duplicateCoordinateChecker.indexOf(datacount[i].latitude) == -1) {
-                        destinationLocations.push({
-                            lat: datacount[i].latitude,
-                            lng: datacount[i].longitude
-                        });
-                        duplicateCoordinateChecker.push(datacount[i].latitude);
-                    }
-                }
-            }
-
-            var mapOptions = {
-                center: currentLocation,
-                zoom: 12
-            };
-
-            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-            // Mevcut konumu mavi daire şeklinde gösteren marker
-            var currentLocationMarker = new google.maps.Marker({
-                position: currentLocation,
-                map: map,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 4,
-                    fillColor: "blue",
-                    fillOpacity: 1,
-                    strokeColor: "blue",
-                    strokeOpacity: 1,
-                    strokeWeight: 2
-                }
-            });
-
-            var directionsService = new google.maps.DirectionsService();
-            var directionsDisplay = new google.maps.DirectionsRenderer();
-            directionsDisplay.setMap(map);
-
-            var waypoints = [];
-            for (var i = 0; i < destinationLocations.length; i++) {
-                waypoints.push({
-                    location: destinationLocations[i],
-                    stopover: true
-                });
-            }
-
-            var radioValue = document.querySelector('input[name="radioOption"]:checked').value;
-            var request = {
-                origin: currentLocation,
-                destination: destinationLocations[destinationLocations.length - 1],
-                waypoints: waypoints,
-                optimizeWaypoints: true,
-                travelMode: radioValue == "Yaya" ? google.maps.TravelMode.WALKING : google.maps.TravelMode.DRIVING
-            };
-                var distanceInKm;
-                    var durationInHours;
-            directionsService.route(request, function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(result);
-
-                    var routes = result.routes;
-                    var distance = 0;
-                    var duration = 0;
-                    for (var i = 0; i < routes.length; i++) {
-                        var legs = routes[i].legs;
-                        for (var j = 0; j < legs.length; j++) {
-                            distance += legs[j].distance.value;
-                            duration += legs[j].duration.value;
-                        }
-                    }
-
-                    // Mesafeyi ve süreyi metrik birimlere dönüştür
-                    distanceInKm = (distance / 1000).toFixed(1);
-                    durationInHours = (duration / 3600).toFixed(1);
-                    
-
-                    // Harita üzerinde mesafe ve süreyi görüntülemek için bir bilgi penceresi oluştur
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: "Mesafe: " + distanceInKm + " km<br>Süre: " + durationInHours + " saat"
-                    });
-
-                    // Bilgi penceresini mevcut konumun üzerine yerleştir
-                    infoWindow.setPosition(currentLocation);
-                    infoWindow.open(map);
-                }
-            });
-            setTimeout(()=>{
-         
-
-            var requestData = {
-                    logId: logId,
-                time: distanceInKm + 'Km' + ',' + durationInHours + ' saat/dakika'
-            };
-
-            $.ajax({
-                url: '@Url.Action("LogAddDistance", "Home")',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(requestData),
-                success: function () {
-                    // Başarılı olduğunda yapılacak işlemler
-                }
-            });
-            }, 1500)
-        }
-
-
-
-          
-       
     </script>
 
     <script>
-  
             var q = "";
             document.addEventListener("DOMContentLoaded", function (event) {
                 getLocation();

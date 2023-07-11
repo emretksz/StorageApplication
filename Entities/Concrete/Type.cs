@@ -17,6 +17,7 @@ namespace Entities.Concrete
         //public bool ?Tpye4 { get; set; }
         //public bool? Tpye5 { get; set; }
         public string Name { get; set; }
+        public string Oran { get; set; }
         public State State { get; set; }
 
     }

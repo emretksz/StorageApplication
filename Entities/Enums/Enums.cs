@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,22 @@ namespace Entities.Enums
 
         public enum PyhsicalWeight
         {
-            Yol=1,//
-            Orman=2,
-            Dag=3,
-            Su=4,
+            yolotoyol,//
+            yolpatika,//
+            ormanbozkir,//
+            ormantarla,//
+            ormancali,//
+            ormanagac,//
+            ormankoru,//
+            dag,
+            tepe,
+            suakarsu ,
+            sugol,
+            bina,
+            gokyuzu,
+            insan
         }
-
+      
        public enum TypeWeight
         {
             Koruluk=1,
