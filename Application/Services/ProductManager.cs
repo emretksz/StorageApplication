@@ -61,6 +61,7 @@ namespace Application.Services
             catch (Exception ex)
             {
                 return new ErrorDataResult<Product>();
+
             }
         }
 
